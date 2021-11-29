@@ -1,0 +1,15 @@
+pipeline {
+  environment {
+    imagename = "apisample"
+    dockerImage = ''
+  }
+  agent any
+  stages {
+    stage('Blue to Green') {
+      steps{
+	sh "docker service update --label-add \"traefik.http.routers.colors-green.priority=100\" green_colors-green"
+	sh "docker service update --label-add \"traefik.http.routers.colors-blue.priority=0\" blue_colors-blue"
+      }
+    }
+  }
+}

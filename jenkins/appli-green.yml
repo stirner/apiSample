@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  colors-green:
+    image: myregistry.local:5000/apisample:green
+    networks:
+      - inbound
+    deploy:
+      mode: replicated
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+      labels:
+        - "traefik.http.routers.colors-green.priority=0"
+        - "traefik.http.routers.colors-green.rule=Path(`/`)"
+        - "traefik.http.routers.colors-green.rule=Host(`apisample.localhost`)"
+        - "traefik.http.routers.colors-green.service=colors-green"
+        - "traefik.http.services.colors-green.loadbalancer.server.port=8080"
+        - "traefik.docker.network=inbound"
+networks:
+  inbound:
+   external: true

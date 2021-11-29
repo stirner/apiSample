@@ -1,0 +1,32 @@
+pipeline {
+  environment {
+    imagename = "apisample"
+    dockerImage = ''
+  }
+  agent any
+  stages {
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build imagename
+        }
+      }
+    }
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( 'https://myregistry.local:5000' ) {
+            dockerImage.push("$BUILD_NUMBER")
+             dockerImage.push('blue')
+
+          }
+        }
+      }
+    }
+    stage('Launch blue') {
+      steps{
+	sh "docker stack deploy -c jenkins/appli-blue.yml blue"
+      }
+    }
+  }
+}
