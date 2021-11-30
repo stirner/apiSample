@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   colors-blue:
-    image: myregistry.local:5000/apisample:latest
+    image: myregistry.local:5000/apisample:blue
     networks:
       - inbound
     deploy:
