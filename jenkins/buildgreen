@@ -25,7 +25,7 @@ pipeline {
     }
     stage('Launch blue') {
       steps{
-	sh "docker stack deploy -c jenkins/appli-blue.yml green"
+	sh "docker stack deploy -c jenkins/appli-green.yml green"
       }
     }
   }
